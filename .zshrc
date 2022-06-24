@@ -1,3 +1,5 @@
+# Fig pre block. Keep at the top of this file.
+[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && . "$HOME/.fig/shell/zshrc.pre.zsh"
 export ZSH="/Users/emilio.escobedo/.oh-my-zsh"
 
 ZSH_THEME="robbyrussell"
@@ -122,3 +124,7 @@ gpr() {
 commands() {
   awk '{a[$2]++}END{for(i in a){print a[i] " " i}}'
 }
+
+# Fig post block. Keep at the bottom of this file.
+[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && . "$HOME/.fig/shell/zshrc.post.zsh"
+eval "$(starship init zsh)"
