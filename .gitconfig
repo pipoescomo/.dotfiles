@@ -3,3 +3,5 @@
 	email = alejandro9445@outlook.com
 [core]
 	pager = less
+[pull]
+	rebase = true
