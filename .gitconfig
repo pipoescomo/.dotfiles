@@ -1,3 +1,5 @@
 [user]
 	name = Emilio Escobedo
 	email = alejandro9445@outlook.com
+[core]
+	pager = less

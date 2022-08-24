@@ -1,17 +1,26 @@
 # Fig pre block. Keep at the top of this file.
 [[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && . "$HOME/.fig/shell/zshrc.pre.zsh"
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 export ZSH="/Users/emilio.escobedo/.oh-my-zsh"
 
 ZSH_THEME="robbyrussell"
 
 plugins=(
 	git
-  	bundler
+  bundler
 	dotenv
 	macos
+	npm
 	rake
 	rbenv
 	ruby
+	sbt
 	zsh-autosuggestions
 	last-working-dir
 	web-search
@@ -125,6 +134,20 @@ commands() {
   awk '{a[$2]++}END{for(i in a){print a[i] " " i}}'
 }
 
+eval "$(starship init zsh)"
+
+export PATH="$HOME/.jenv/bin:$PATH"
+eval "$(jenv init -)"
+
+. /usr/local/opt/asdf/libexec/asdf.sh
+source /usr/local/opt/powerlevel10k/powerlevel10k.zsh-theme
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+
+# Load Angular CLI autocompletion.
+source <(ng completion script)
+
 # Fig post block. Keep at the bottom of this file.
 [[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && . "$HOME/.fig/shell/zshrc.post.zsh"
-eval "$(starship init zsh)"
