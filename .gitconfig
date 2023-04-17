@@ -1,7 +1,9 @@
 [user]
 	name = Emilio Escobedo
-	email = alejandro9445@outlook.com
+	email = 6564317+pipoescomo@users.noreply.github.com
 [core]
 	pager = less
 [pull]
 	rebase = true
+[init]
+	defaultBranch = main

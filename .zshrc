@@ -1,5 +1,3 @@
-# Fig pre block. Keep at the top of this file.
-[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && . "$HOME/.fig/shell/zshrc.pre.zsh"
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -7,13 +5,13 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-export ZSH="/Users/emilio.escobedo/.oh-my-zsh"
-
-ZSH_THEME="robbyrussell"
-
+# Fig pre block. Keep at the top of this file.
+[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
 plugins=(
+	aws
 	git
-  bundler
+	gcloud
+	bundler
 	dotenv
 	macos
 	npm
@@ -21,20 +19,44 @@ plugins=(
 	rbenv
 	ruby
 	sbt
+	terraform
 	zsh-autosuggestions
 	last-working-dir
 	web-search
 	extract
 	history
 	sudo
+	kubectl
 	yarn
 	z
 )
 
-source $ZSH/oh-my-zsh.sh
-source /Users/emilio.escobedo/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
 # user configuration
+source "/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
+eval $(/opt/homebrew/bin/brew shellenv)
+
+export PATH=$(brew --prefix ruby)/bin:$PATH
+
+export ZSH="/Users/emilio.escobedo/.oh-my-zsh"
+. $ZSH/oh-my-zsh.sh
+
+. $HOME/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+. /opt/homebrew/opt/asdf/libexec/asdf.sh
+
+eval "$(starship init zsh)"
+
+export PATH="$HOME/.jenv/bin:$PATH"
+eval "$(jenv init -)"
+
+# Load Angular CLI autocompletion.
+. <(ng completion script)
+
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+
+export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+
 # custom aliases
 alias c="code .";
 alias ll="ls -1a";
@@ -102,6 +124,7 @@ alias dockerup='docker-compose up -d'
 alias dockerrm='docker-compose rm --all'
 
 ## other aliases
+alias code='subl'
 alias zshrc='code ~/.zshrc'
 alias topten="history | commands | sort -rn | head"
 alias myip="curl http://ipecho.net/plain; echo"
@@ -134,20 +157,11 @@ commands() {
   awk '{a[$2]++}END{for(i in a){print a[i] " " i}}'
 }
 
-eval "$(starship init zsh)"
+source /opt/homebrew/opt/powerlevel10k/powerlevel10k.zsh-theme
 
-export PATH="$HOME/.jenv/bin:$PATH"
-eval "$(jenv init -)"
-
-. /usr/local/opt/asdf/libexec/asdf.sh
-source /usr/local/opt/powerlevel10k/powerlevel10k.zsh-theme
+# Fig post block. Keep at the bottom of this file.
+[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-
-# Load Angular CLI autocompletion.
-source <(ng completion script)
-
-# Fig post block. Keep at the bottom of this file.
-[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && . "$HOME/.fig/shell/zshrc.post.zsh"
+(( ! ${+functions[p10k]} )) || p10k finalize
